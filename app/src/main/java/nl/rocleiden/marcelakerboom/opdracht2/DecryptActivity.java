@@ -11,14 +11,14 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
     private EditText messageText;
     private EditText decryptedText;
     private SeekBar strengthSlider;
-
+    private CeasarEncryptor encryptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decrypt);
 
-
+        encryptor = new CeasarEncryptor();
         messageText = (EditText) findViewById(R.id.messageText);
         decryptedText = (EditText) findViewById(R.id.decryptedText);
         strengthSlider = (SeekBar) findViewById(R.id.strengthSlider);
@@ -31,34 +31,10 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
 
     protected void decryptMessage() {
         CharSequence message = messageText.getText();
-        String decryptedMessage = decryptString(message);
+        int strength = strengthSlider.getProgress();
+        String decryptedMessage = encryptor.decrypt(message, strength);
 
         decryptedText.setText(decryptedMessage);
-    }
-
-    private String decryptString(CharSequence messageChars) {
-        int length = messageChars.length();
-        char[] encryptedChars = new char[length];
-
-        for (int i = 0; i < length; i++) {
-            char messageChar = messageChars.charAt(i);
-            char encryptedChar = decryptLetter(messageChar);
-            encryptedChars[i] = encryptedChar;
-        }
-
-        return new String(encryptedChars);
-    }
-
-    private char decryptLetter(char letter) {
-        int strength = strengthSlider.getProgress();
-
-        for (int i = 0; i < strength; i++) {
-            if (letter > 'A' && letter <= 'Z') letter--;
-            else if (letter == 'A') letter = 'Z';
-            else if (letter > 'a' && letter <= 'z') letter--;
-            else if (letter == 'a') letter = 'z';
-        }
-        return letter;
     }
 
     @Override
@@ -74,7 +50,11 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
     @Override
     public void afterTextChanged(Editable message) {
         char letter = message.charAt(message.length() - 1);
-        String decryptedMessage = decryptedText.getText().toString() + decryptLetter(letter);
+        int strength = strengthSlider.getProgress();
+
+        char decryptedLetter = encryptor.decryptChar(letter, strength);
+        String decryptedMessage = decryptedText.getText().toString() + decryptedLetter;
+
         decryptedText.setText(decryptedMessage);
     }
 

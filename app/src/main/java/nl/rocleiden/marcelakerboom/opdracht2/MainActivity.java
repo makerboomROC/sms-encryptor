@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     private EditText messageText;
     private EditText encryptedText;
     private SeekBar strengthSlider;
+    private CeasarEncryptor encryptor;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
 
     protected void encryptMessage() {
         CharSequence message = messageText.getText();
-        String encryptedMessage = encryptString(message);
+        int strength = strengthSlider.getProgress();
+
+        String encryptedMessage = encryptor.encrypt(message, strength);
 
         encryptedText.setText(encryptedMessage);
     }
@@ -76,9 +80,12 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     @Override
     public void afterTextChanged(Editable message) {
         char letter = message.charAt(message.length() - 1);
-        String encryptedMessage = encryptedText.getText().toString() + encryptLetter(letter);
+        int strength = strengthSlider.getProgress();
+
+        char encryptedLetter = encryptor.encryptChar(letter, strength);
+        String encryptedMessage = encryptedText.getText().toString() + encryptedLetter;
+
         encryptedText.setText(encryptedMessage);
-//        encryptMessage();
     }
 
     @Override
@@ -127,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        encryptor = new CeasarEncryptor();
         recipientText = (EditText) findViewById(R.id.recipientText);
         messageText = (EditText) findViewById(R.id.messageText);
         encryptedText = (EditText) findViewById(R.id.encryptedText);
@@ -139,31 +147,6 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    private String encryptString(CharSequence messageChars) {
-        int length = messageChars.length();
-        char[] encryptedChars = new char[length];
-
-        for (int i = 0; i < length; i++) {
-            char messageChar = messageChars.charAt(i);
-            char encryptedChar = encryptLetter(messageChar);
-            encryptedChars[i] = encryptedChar;
-        }
-
-        return new String(encryptedChars);
-    }
-
-    private char encryptLetter(char letter) {
-        int strength = strengthSlider.getProgress();
-
-        for (int i = 0; i < strength; i++) {
-            if (letter >= 'A' && letter < 'Z') letter++;
-            else if (letter == 'Z') letter = 'A';
-            else if (letter >= 'a' && letter < 'z') letter++;
-            else if (letter == 'z') letter = 'a';
-        }
-        return letter;
     }
 
     @Override
