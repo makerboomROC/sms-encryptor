@@ -14,7 +14,7 @@ public class CeasarEncryptor {
 
     public String decrypt(CharSequence target, int[] salts) {
         int subjectLength = target.length();
-        int saltsLength = target.length();
+        int saltsLength = salts.length;
         char[] result = new char[subjectLength];
 
         for (int i = 0; i < subjectLength; i++) {

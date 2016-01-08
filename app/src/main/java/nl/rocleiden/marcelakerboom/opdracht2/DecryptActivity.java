@@ -10,11 +10,18 @@ import android.widget.SeekBar;
 public class DecryptActivity extends AppCompatActivity implements TextWatcher, SeekBar.OnSeekBarChangeListener {
     private EditText messageText;
     private EditText decryptedText;
-    private SeekBar strengthSlider;
+    private SeekBar[] strengthSliders;
     private CeasarEncryptor encryptor;
 
-    public int getStrength() {
-        return strengthSlider.getProgress();
+    public int[] getStrength() {
+        int length = strengthSliders.length;
+        int[] strength = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            strength[i] = strengthSliders[i].getProgress();
+        }
+
+        return strength;
     }
 
     public String getMessage() {
@@ -33,10 +40,16 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
         encryptor = new CeasarEncryptor();
         messageText = (EditText) findViewById(R.id.messageText);
         decryptedText = (EditText) findViewById(R.id.decryptedText);
-        strengthSlider = (SeekBar) findViewById(R.id.strengthSlider);
+
+        strengthSliders = new SeekBar[2];
+        strengthSliders[0] = (SeekBar) findViewById(R.id.strengthSlider1);
+        strengthSliders[1] = (SeekBar) findViewById(R.id.strengthSlider2);
 
         messageText.addTextChangedListener(this);
-        strengthSlider.setOnSeekBarChangeListener(this);
+
+        for (int i = 0; i < strengthSliders.length; i++) {
+            strengthSliders[i].setOnSeekBarChangeListener(this);
+        }
 
         decryptMessage();
     }
@@ -58,8 +71,11 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
 
     @Override
     public void afterTextChanged(Editable message) {
-        char letter = message.charAt(message.length() - 1);
-        char decryptedLetter = encryptor.decryptChar(letter, getStrength());
+        int index = message.length() - 1;
+        char letter = message.charAt(index);
+        int strength = getStrength()[index % 2];
+
+        char decryptedLetter = encryptor.decryptChar(letter, strength);
         CharSequence decryptedMessage = getDecryptedMessage() + decryptedLetter;
 
         decryptedText.setText(decryptedMessage);

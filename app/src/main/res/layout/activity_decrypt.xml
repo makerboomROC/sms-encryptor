@@ -24,7 +24,7 @@
         android:id="@+id/messageText"
         android:lines="4"
         android:gravity="top"
-        android:text="ddd" />
+        android:text="@string/example_text" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,7 +52,15 @@
     <SeekBar
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/strengthSlider"
+        android:id="@+id/strengthSlider1"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="false"
+        android:max="10" />
+
+    <SeekBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/strengthSlider2"
         android:layout_gravity="center_horizontal"
         android:indeterminate="false"
         android:max="10" />
