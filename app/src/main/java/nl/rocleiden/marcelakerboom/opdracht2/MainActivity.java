@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
 
     protected void encryptMessage() {
         CharSequence message = messageText.getText();
-        String encryptedMessage = encryptMessage(message);
+        String encryptedMessage = encryptString(message);
 
         encryptedText.setText(encryptedMessage);
     }
@@ -107,11 +107,18 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.about) {
-            Intent aboutIntent = new Intent(this, AboutActivity.class);
-            startActivity(aboutIntent);
-            return true;
+
+        switch (itemId) {
+            case R.id.about:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
+                return true;
+            case R.id.decrypt:
+                Intent decryptIntent = new Intent(this, DecryptActivity.class);
+                startActivity(decryptIntent);
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private String encryptMessage(CharSequence messageChars) {
+    private String encryptString(CharSequence messageChars) {
         int length = messageChars.length();
         char[] encryptedChars = new char[length];
 
