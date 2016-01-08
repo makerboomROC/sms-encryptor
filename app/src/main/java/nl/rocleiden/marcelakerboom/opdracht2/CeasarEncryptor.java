@@ -1,15 +1,24 @@
 package nl.rocleiden.marcelakerboom.opdracht2;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by Marcel on 8-1-2016.
  */
 public class CeasarEncryptor {
 
     public String decrypt(CharSequence target, int salt) {
-        int length = target.length();
-        char[] result = new char[length];
+        int[] salts = {salt};
+        return decrypt(target, salts);
+    }
 
-        for (int i = 0; i < length; i++) {
+    public String decrypt(CharSequence target, int[] salts) {
+        int subjectLength = target.length();
+        int saltsLength = target.length();
+        char[] result = new char[subjectLength];
+
+        for (int i = 0; i < subjectLength; i++) {
+            int salt = salts[i % saltsLength];
             result[i] = decryptChar(target.charAt(i), salt);
         }
 
@@ -27,11 +36,18 @@ public class CeasarEncryptor {
     }
 
 
-    public String encrypt(CharSequence subject, int salt) {
-        int length = subject.length();
-        char[] result = new char[length];
+    public String encrypt(CharSequence target, int salt) {
+        int[] salts = {salt};
+        return encrypt(target, salts);
+    }
 
-        for (int i = 0; i < length; i++) {
+    public String encrypt(CharSequence subject, int[] salts) {
+        int subjectLength = subject.length();
+        int saltsLength = salts.length;
+        char[] result = new char[subjectLength];
+
+        for (int i = 0; i < subjectLength; i++) {
+            int salt = salts[i % saltsLength];
             result[i] = encryptChar(subject.charAt(i), salt);
         }
 
