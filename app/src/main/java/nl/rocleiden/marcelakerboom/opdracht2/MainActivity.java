@@ -22,8 +22,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     private EditText recipientText;
     private EditText messageText;
     private EditText encryptedText;
-    private SeekBar strengthSlider1;
-    private SeekBar strengthSlider2;
+    private SeekBar[] strengthSliders;
     private CeasarEncryptor encryptor;
 
     /**
@@ -37,10 +36,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     public int[] getStrength() {
-        int[] strength = {
-                strengthSlider1.getProgress(),
-                strengthSlider2.getProgress()
-        };
+        int length = strengthSliders.length;
+        int[] strength = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            strength[i] = strengthSliders[i].getProgress();
+        }
+
         return strength;
     }
 
@@ -150,12 +152,16 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         recipientText = (EditText) findViewById(R.id.recipientText);
         messageText = (EditText) findViewById(R.id.messageText);
         encryptedText = (EditText) findViewById(R.id.encryptedText);
-        strengthSlider1 = (SeekBar) findViewById(R.id.strengthSlider1);
-        strengthSlider2 = (SeekBar) findViewById(R.id.strengthSlider2);
+
+        strengthSliders = new SeekBar[2];
+        strengthSliders[0] = (SeekBar) findViewById(R.id.strengthSlider1);
+        strengthSliders[1] = (SeekBar) findViewById(R.id.strengthSlider2);
 
         messageText.addTextChangedListener(this);
-        strengthSlider1.setOnSeekBarChangeListener(this);
-        strengthSlider2.setOnSeekBarChangeListener(this);
+
+        for (int i = 0; i < strengthSliders.length; i++) {
+            strengthSliders[i].setOnSeekBarChangeListener(this);
+        }
 
         encryptMessage();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
