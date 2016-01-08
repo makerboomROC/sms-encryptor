@@ -31,8 +31,20 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
      */
     private GoogleApiClient client;
 
-    public void encrypt(View view) {
-        encryptMessage();
+    public String getRecipient() {
+        return recipientText.getText().toString();
+    }
+
+    public int getStrength() {
+        return strengthSlider.getProgress();
+    }
+
+    public String getMessage() {
+        return messageText.getText().toString();
+    }
+
+    public String getEncryptedMessage() {
+        return encryptedText.getText().toString();
     }
 
     public void send(View view) {
@@ -45,20 +57,14 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     protected void encryptMessage() {
-        CharSequence message = messageText.getText();
-        int strength = strengthSlider.getProgress();
-
-        String encryptedMessage = encryptor.encrypt(message, strength);
-
+        String encryptedMessage = encryptor.encrypt(getMessage(), getStrength());
         encryptedText.setText(encryptedMessage);
     }
 
     protected void sendEncryptedMessage() {
         SmsManager smsManager = SmsManager.getDefault();
-        String encryptedMessage = encryptedText.getText().toString();
-        String recipient = recipientText.getText().toString();
         try {
-            smsManager.sendTextMessage(recipient, null, encryptedMessage, null, null);
+            smsManager.sendTextMessage(getRecipient(), null, getEncryptedMessage(), null, null);
             Toast.makeText(getApplicationContext(), "SMS Sent!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             String errorMessage = "SMS failed: " + e.getMessage();
@@ -80,10 +86,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     @Override
     public void afterTextChanged(Editable message) {
         char letter = message.charAt(message.length() - 1);
-        int strength = strengthSlider.getProgress();
-
-        char encryptedLetter = encryptor.encryptChar(letter, strength);
-        String encryptedMessage = encryptedText.getText().toString() + encryptedLetter;
+        char encryptedLetter = encryptor.encryptChar(letter, getStrength());
+        String encryptedMessage = getEncryptedMessage() + encryptedLetter;
 
         encryptedText.setText(encryptedMessage);
     }

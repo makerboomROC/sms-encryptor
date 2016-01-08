@@ -13,6 +13,18 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
     private SeekBar strengthSlider;
     private CeasarEncryptor encryptor;
 
+    public int getStrength() {
+        return strengthSlider.getProgress();
+    }
+
+    public String getMessage() {
+        return messageText.getText().toString();
+    }
+
+    public String getDecryptedMessage() {
+        return decryptedText.getText().toString();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +42,7 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
     }
 
     protected void decryptMessage() {
-        CharSequence message = messageText.getText();
-        int strength = strengthSlider.getProgress();
-        String decryptedMessage = encryptor.decrypt(message, strength);
-
+        String decryptedMessage = encryptor.decrypt(getMessage(), getStrength());
         decryptedText.setText(decryptedMessage);
     }
 
@@ -50,10 +59,8 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
     @Override
     public void afterTextChanged(Editable message) {
         char letter = message.charAt(message.length() - 1);
-        int strength = strengthSlider.getProgress();
-
-        char decryptedLetter = encryptor.decryptChar(letter, strength);
-        String decryptedMessage = decryptedText.getText().toString() + decryptedLetter;
+        char decryptedLetter = encryptor.decryptChar(letter, getStrength());
+        CharSequence decryptedMessage = getDecryptedMessage() + decryptedLetter;
 
         decryptedText.setText(decryptedMessage);
     }
