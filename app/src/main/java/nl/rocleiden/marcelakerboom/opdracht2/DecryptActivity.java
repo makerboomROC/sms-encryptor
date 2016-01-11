@@ -41,14 +41,15 @@ public class DecryptActivity extends AppCompatActivity implements TextWatcher, S
         messageText = (EditText) findViewById(R.id.messageText);
         decryptedText = (EditText) findViewById(R.id.decryptedText);
 
-        strengthSliders = new SeekBar[2];
-        strengthSliders[0] = (SeekBar) findViewById(R.id.strengthSlider1);
-        strengthSliders[1] = (SeekBar) findViewById(R.id.strengthSlider2);
+        strengthSliders = new SeekBar[]{
+                (SeekBar) findViewById(R.id.strengthSlider1),
+                (SeekBar) findViewById(R.id.strengthSlider2)
+        };
 
         messageText.addTextChangedListener(this);
 
-        for (int i = 0; i < strengthSliders.length; i++) {
-            strengthSliders[i].setOnSeekBarChangeListener(this);
+        for (SeekBar strengthSlider : strengthSliders) {
+            strengthSlider.setOnSeekBarChangeListener(this);
         }
 
         decryptMessage();

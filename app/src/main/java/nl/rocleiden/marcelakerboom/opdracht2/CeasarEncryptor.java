@@ -1,10 +1,5 @@
 package nl.rocleiden.marcelakerboom.opdracht2;
 
-import java.lang.reflect.Array;
-
-/**
- * Created by Marcel on 8-1-2016.
- */
 public class CeasarEncryptor {
 
     public String decrypt(CharSequence target, int salt) {

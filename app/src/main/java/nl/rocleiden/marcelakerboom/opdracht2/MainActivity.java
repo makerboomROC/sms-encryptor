@@ -159,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
 
         messageText.addTextChangedListener(this);
 
-        for (int i = 0; i < strengthSliders.length; i++) {
-            strengthSliders[i].setOnSeekBarChangeListener(this);
+        for (SeekBar strengthSlider : strengthSliders) {
+            strengthSlider.setOnSeekBarChangeListener(this);
         }
 
         encryptMessage();
