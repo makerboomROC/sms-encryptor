@@ -60,7 +60,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     public void cancel(View view) {
+        messageText.setText("");
+        encryptedText.setText("");
+        recipientText.setText("");
 
+        for (SeekBar strengthSlider : strengthSliders) {
+            strengthSlider.setProgress(0);
+        }
     }
 
     protected void encryptMessage() {
@@ -136,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
                 return true;
             case R.id.decrypt:
                 Intent decryptIntent = new Intent(this, DecryptActivity.class);
+                decryptIntent.putExtra("encryptedMessage", encryptedText.getText().toString());
+                decryptIntent.putExtra("strengths", getStrength());
                 startActivity(decryptIntent);
                 return true;
         }
