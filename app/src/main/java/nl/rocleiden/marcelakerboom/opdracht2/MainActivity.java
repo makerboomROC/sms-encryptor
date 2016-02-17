@@ -227,8 +227,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     private void reverseText() {
-        CharSequence message = messageText.getText();
-        String reversedMessage = reverseString(message);
+        CharSequence encryptedMessage = encryptedText.getText();
+        String reversedMessage = reverseString(encryptedMessage);
 
         reversedText.setText(reversedMessage);
     }
