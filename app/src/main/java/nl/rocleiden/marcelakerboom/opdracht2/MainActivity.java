@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
 
             encryptedText.setText(encryptedMessage);
         }
-        reverseText();
+        reverseMessage();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         }
 
         encryptMessage();
-        reverseText();
+        reverseMessage();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         client.disconnect();
     }
 
-    private void reverseText() {
+    private void reverseMessage() {
         CharSequence encryptedMessage = encryptedText.getText();
         String reversedMessage = reverseString(encryptedMessage);
 
