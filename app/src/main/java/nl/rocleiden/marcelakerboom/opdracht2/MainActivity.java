@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     private String reverseString(CharSequence string) {
-        String reversedString = new String();
+        String reversedString = "";
 
         for (int i = string.length() - 1; i >= 0; i--) {
             reversedString = reversedString + string.charAt(i);
