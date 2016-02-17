@@ -35,7 +35,7 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/messageText"
-        android:lines="4"
+        android:lines="3"
         android:gravity="top"
         android:text="@string/example_text" />
 
@@ -51,6 +51,23 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/encryptedText"
+        android:lines="3"
+        android:editable="false"
+        android:enabled="false"
+        android:gravity="top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reversed message"
+        android:id="@+id/textView3" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/reversedText"
         android:lines="4"
         android:editable="false"
         android:enabled="false"

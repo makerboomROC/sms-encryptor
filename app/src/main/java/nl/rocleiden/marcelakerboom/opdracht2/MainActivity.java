@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     private EditText recipientText;
     private EditText messageText;
     private EditText encryptedText;
+    private EditText reversedText;
     private SeekBar[] strengthSliders;
     private CeasarEncryptor encryptor;
 
@@ -93,19 +94,25 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void onTextChanged(CharSequence message, int start, int before, int count) {
+        if (count < 1) {
+            int length = getEncryptedMessage().length() - 1;
+            String encryptedMessage = getEncryptedMessage().substring(0, length);
+            encryptedText.setText(encryptedMessage);
+        } else {
+            char letter = message.charAt(start);
+            int strength = getStrength()[start % 2];
+
+            char encryptedLetter = encryptor.encryptChar(letter, strength);
+            String encryptedMessage = getEncryptedMessage() + encryptedLetter;
+
+            encryptedText.setText(encryptedMessage);
+        }
+        reverseText();
     }
 
     @Override
     public void afterTextChanged(Editable message) {
-        int index = message.length() - 1;
-        char letter = message.charAt(index);
-        int strength = getStrength()[index % 2];
-
-        char encryptedLetter = encryptor.encryptChar(letter, strength);
-        String encryptedMessage = getEncryptedMessage() + encryptedLetter;
-
-        encryptedText.setText(encryptedMessage);
     }
 
     @Override
@@ -160,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         recipientText = (EditText) findViewById(R.id.recipientText);
         messageText = (EditText) findViewById(R.id.messageText);
         encryptedText = (EditText) findViewById(R.id.encryptedText);
+        reversedText = (EditText) findViewById(R.id.reversedText);
 
         strengthSliders = new SeekBar[2];
         strengthSliders[0] = (SeekBar) findViewById(R.id.strengthSlider1);
@@ -172,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         }
 
         encryptMessage();
+        reverseText();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -215,5 +224,16 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Seek
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    private void reverseText() {
+        CharSequence message = messageText.getText();
+        String reversedMessage = new String();
+
+        for (int i = message.length() - 1; i >= 0; i--) {
+            reversedMessage = reversedMessage + message.charAt(i);
+        }
+
+        reversedText.setText(reversedMessage);
     }
 }
